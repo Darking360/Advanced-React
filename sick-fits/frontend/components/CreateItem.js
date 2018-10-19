@@ -43,8 +43,8 @@ class CreateItem extends Component {
     this.setState({ [name]: val });
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+  uploadFile = () => {
+    
   }
 
   render() {
