@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { randomBytes } = require('crypto');
+const { promisify } = require('util');
 
 const mutations = {
   async createItem(parent, args, ctx, info) {
@@ -62,6 +64,61 @@ const mutations = {
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye' };
+  },
+  async requestReset(parent, { email }, ctx, info) {
+    // Check if user is real
+    const user = await ctx.db.query.user({ where: { email } });
+    if (!user) {
+      throw new Error(`No such user found for email ${email}`)
+    } else {
+      const randomBytesPromiseified = promisify(randomBytes);
+      const resetToken = (await randomBytesPromiseified(20)).toString('hex');
+      const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+      const res = ctx.db.mutation.updateUser({
+        where: { email },
+        data: { resetToken, resetTokenExpiry }
+      });
+      return { message: 'Thanks' };
+    }
+    // Reset token and set expiry of that user
+    // Send email with reset token
+  },
+  async resetPassword(parent, { resetToken, newPassword, confirmPassword }, ctx, info) {
+    // Check if passwords match
+    if (newPassword != confirmPassword) {
+      throw new Error("Your passwords don't match");
+    }
+    // Check if it is a legit reset token
+    // Check if it is expired
+    const [user] = await ctx.db.query.users({
+      where: {
+        resetToken,
+        resetTokenExpiry_gte: Date.now() - 3600000,
+      }
+    });
+    if (!user) {
+      throw new Error('This token is either invalid or expired');
+    }
+    // Hash the new password
+    const password = await bcrypt.hash(newPassword, 10);
+    // Save the new password to the user and remove resetToken
+    const updatedUser = await ctx.db.mutation.updateUser({
+      where: { id: user.id },
+      data: {
+        resetToken: null,
+        resetTokenExpiry: null,
+        password
+      },
+    });
+    // Generate JWT
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    // Set JWT token to token
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+    });
+    // Return the user
+    return user;
   }
 };
 
