@@ -29,7 +29,7 @@ class Item extends Component {
         {item.image && <img src={item.image} alt={item.title}/>}
         <Title>
           <Link href={{
-            pathName: '/item',
+            pathname: 'item',
             query: { id: item.id }
           }}>
             <a>
