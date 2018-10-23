@@ -43,12 +43,29 @@ class CreateItem extends Component {
     this.setState({ [name]: val });
   }
 
-  uploadFile = () => {
-    
+  uploadFile = async (e) => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'sickfits');
+    const response = await fetch(
+      'https://api.cloudinary.com/v1_1/darking360/image/upload',
+      {
+        method: 'POST',
+        body: data
+      }
+    );
+
+    const file = await response.json();
+    this.setState({
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url,
+    });
+
   }
 
   render() {
-    const { title, price, description } = this.state;
+    const { title, price, description, image } = this.state;
     return(
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
         {(createItem, { loading, error }) => (
@@ -63,6 +80,16 @@ class CreateItem extends Component {
             <h2>Sell an Item</h2>
             <Error error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
+              <label htmlFor="file">Title</label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                placeholder="Upload an image"
+                required
+                onChange={this.uploadFile}
+              />
+              { image && <img src={image} width="200" alt="Image product preview"/> }
               <label htmlFor="title">Title</label>
               <input
                 type="text"
