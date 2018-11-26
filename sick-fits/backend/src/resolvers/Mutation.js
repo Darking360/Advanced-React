@@ -34,11 +34,14 @@ const mutations = {
   async deleteItem(parent, args, ctx, info) {
     const where = { id: args.id };
     // Find Item
-    const item = await ctx.db.query.item({ where }, `{id title}`)
+    const item = await ctx.db.query.item({ where }, `{id title user { id }}`)
     // Check permissions
-    // TODO
-    // Then delete
-    return ctx.db.mutation.deleteItem({ where }, info);
+    const ownsItem = item.user.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some((permission) => ['ADMIN', 'ITEMDELETE'].includes(permission));
+    if (ownsItem || hasPermissions) {
+      // Then delete
+      return ctx.db.mutation.deleteItem({ where }, info);
+    } else throw new Error("You don't have permissions to do that");
   },
   async signup(parent, args, ctx, info) {
     args.email = args.email.toLowerCase();
