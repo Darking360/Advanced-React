@@ -1,3 +1,4 @@
+import Cart from './Cart';
 import Nav from './Nav';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -68,7 +69,7 @@ const Header = props => (
       <p>Search</p>
     </div>
     <div>
-      Cart
+      <Cart />
     </div>
   </StyledHeader>
 
