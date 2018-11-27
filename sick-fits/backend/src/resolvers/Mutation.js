@@ -200,7 +200,25 @@ const mutations = {
         },
       }, info);
     }
-  }
+  },
+  async removeFromCart(parent, { id }, ctx, info) {
+    // Check if they're logged in
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that');
+    }
+    // Find the cart item
+    const cartItem = await ctx.db.query.cartItem({
+      where: { id }, 
+    }, '{ id user { id } }');
+    // Make sure they own that cart item
+    if (cartItem && cartItem.user.id === ctx.request.userId) {
+      return ctx.db.mutation.deleteCartItem({
+        where: { id },
+      }, info);
+    } else if (!cartItem) throw new Error('CartItem not found');
+    else throw new Error('You do not own this CartItem');
+    // Delete cart Item
+  },
 };
 
 module.exports = mutations;

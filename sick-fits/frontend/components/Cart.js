@@ -3,9 +3,12 @@ import CartStyles from './styles/CartStyles';
 import Supreme from './styles/Supreme';
 import CloseButton from './styles/CloseButton';
 import SickButton from './styles/SickButton';
+import CartItem from './CartItem';
 import User from './User';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import calcTotalPrice from '../lib/calcTotalPrice';
+import formatMoney from '../lib/formatMoney';
 
 const LOCAL_STATE_QUERY = gql`
     query {
@@ -36,8 +39,16 @@ const Cart = () => {
                                         <Supreme>Your Cart</Supreme>
                                         <p>{me.name} have {me.cart.length} item{me.cart.length !== 1 ? 's' : null} in your cart</p>
                                     </header>
+                                    <ul>
+                                        {me.cart.map((item) => (
+                                            <CartItem
+                                                key={item.id}
+                                                cartItem={item}
+                                            />
+                                        ))}
+                                    </ul>
                                     <footer>
-                                        <p>$10.10</p>
+                                        <p>{formatMoney(calcTotalPrice(me.cart))}</p>
                                         <SickButton>Checkout</SickButton>
                                     </footer>
                                 </CartStyles>
