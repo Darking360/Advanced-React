@@ -9,6 +9,7 @@ import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import calcTotalPrice from '../lib/calcTotalPrice';
 import formatMoney from '../lib/formatMoney';
+import TakeMyMoney from './TakeMyMoney';
 import { adopt } from 'react-adopt';
 
 const LOCAL_STATE_QUERY = gql`
@@ -52,7 +53,9 @@ const Cart = () => {
                         </ul>
                         <footer>
                             <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-                            <SickButton>Checkout</SickButton>
+                            <TakeMyMoney>
+                                <SickButton>Checkout</SickButton>
+                            </TakeMyMoney>
                         </footer>
                     </CartStyles>
                 );
