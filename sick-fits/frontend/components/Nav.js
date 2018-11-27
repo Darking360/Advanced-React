@@ -2,6 +2,7 @@ import Link from 'next/link';
 import NavStyles from './styles/NavStyles';
 import User from './User';
 import Signout from './Signout';
+import CartCount from './CartCount';
 import { TOGGLE_CART_MUTATION } from './Cart';
 import { Mutation } from 'react-apollo';
 
@@ -26,7 +27,7 @@ const Nav = props => (
             <Signout />
             <Mutation mutation={TOGGLE_CART_MUTATION}>
               {(toggleCart) => (
-                <button onClick={toggleCart}>Cart</button>
+                  <button onClick={toggleCart}>Cart <CartCount count={me.cart.reduce((tall, item) => tall + item.quantity, 0)} /></button>
               )}
             </Mutation>
           </>
