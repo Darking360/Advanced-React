@@ -236,10 +236,36 @@ const mutations = {
       currency: 'USD',
       source
     });
+    console.log('Stripe charge is ---->');
+    console.log(charge);
     // Convert cart items to order items
+    const orderItems = user.cart.map((cartItem) => {
+      const OrderItem = {
+        ...cartItem.item,
+        user: {
+          connect: { id: ctx.request.userId },
+        },
+        quantity: cartItem.quantity,
+      };
+    });
     // Create order
+    const Order = await ctx.db.mutation.createOrder({
+      data: {
+        total: charge.amount,
+        charge: charge.id,
+        items: { create: OrderItems },
+        user: { connect: { id: ctx.request.userId } },
+      },
+    });
     // Clean up - Clear users cart, delete cartItems
+    const cartItemIds = user.cart.map((cartItem) => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: {
+        id_in: cartItemIds,
+      },
+    });
     // Return order to the client
+    return Order;
   },
 };
 

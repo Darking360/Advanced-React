@@ -26,15 +26,12 @@ const CREATE_ORDER_MUTATION = gql`
 `;
 
 export class TakeMyMoney extends Component {
-  static propTypes = {
 
-  }
-
-  onToken = (res, createOrder) => {
+  onTokenResponse = async (res, createOrder) => {
     console.log('Got token ---->')
     console.log(res.id)
     // Call manually createOrder
-    createOrder({
+    const order = await createOrder({
       variables: {
         token: res.id,
       },
@@ -42,13 +39,27 @@ export class TakeMyMoney extends Component {
   }
 
   render() {
-    const { token } = this.state;
     return (
       <Mutation
         mutation={CREATE_ORDER_MUTATION}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
-      
+        {(createOrder) => (
+          <User>
+            {({ data: { me } }) => (
+                <StripeCheckout
+                    amount={calcTotalPrice(me.cart)}
+                    name="Sick Fists"
+                    description={`"Order of ${totalItems(me.cart)}" items`}
+                    image={me.cart[0].item && me.cart[0].item.image}
+                    stripeKey="pk_test_nV2HqANgNPjYtE42qrH3KyUh"
+                    currency="USD"
+                    email={me.email}
+                    token={res => this.onTokenResponse(res, createOrder)}
+                >{this.props.children}</StripeCheckout>
+            )}
+          </User>
+        )}
       </Mutation>
     )
   }
