@@ -11,29 +11,45 @@ import User, { CURRENT_USER_QUERY } from './User';
 
 const totalItems = (cart) => cart.reduce((tall, item) => tall + item.quantity, 0);
 
+const CREATE_ORDER_MUTATION = gql`
+  mutation createOrder($token: String!) {
+    createOrder(token: $token) {
+      id
+      charge
+      total
+      items {
+        id
+        title
+      }
+    }
+  }
+`;
+
 export class TakeMyMoney extends Component {
   static propTypes = {
 
   }
 
+  onToken = (res, createOrder) => {
+    console.log('Got token ---->')
+    console.log(res.id)
+    // Call manually createOrder
+    createOrder({
+      variables: {
+        token: res.id,
+      },
+    }).catch((error) => alert(error.message));
+  }
+
   render() {
+    const { token } = this.state;
     return (
-      <div>
-        <User>
-            {({ data: { me } }) => (
-                <StripeCheckout
-                    amount={calcTotalPrice(me.cart)}
-                    name="Sick Fists"
-                    description={`"Order of ${totalItems(me.cart)}" items`}
-                    image={me.cart[0].item && me.cart[0].item.image}
-                    stripeKey="pk_test_nV2HqANgNPjYtE42qrH3KyUh"
-                    currency="USD"
-                    email={me.email}
-                    token={res => this.onTokenResponse}
-                >{this.props.children}</StripeCheckout>
-            )}
-        </User>
-      </div>
+      <Mutation
+        mutation={CREATE_ORDER_MUTATION}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+      >
+      
+      </Mutation>
     )
   }
 }
