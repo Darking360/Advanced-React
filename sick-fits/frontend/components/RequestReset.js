@@ -37,7 +37,7 @@ class RequestReset extends Component {
         variables={this.state}
       >
         {(requestReset, { error, loading, called }) => (
-          <Form method='post' onSubmit={(e) => this.handleSubmit(e,requestReset)}>
+          <Form data-test="form" method='post' onSubmit={(e) => this.handleSubmit(e,requestReset)}>
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Reset Password Reset</h2>
               <Error error={error} />
@@ -65,3 +65,4 @@ class RequestReset extends Component {
 }
 
 export default RequestReset;
+export { REQUEST_RESET_MUTATION };
