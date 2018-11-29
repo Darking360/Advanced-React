@@ -28,8 +28,6 @@ const CREATE_ORDER_MUTATION = gql`
 export class TakeMyMoney extends Component {
 
   onTokenResponse = async (res, createOrder) => {
-    console.log('Got token ---->')
-    console.log(res.id)
     // Call manually createOrder
     const order = await createOrder({
       variables: {

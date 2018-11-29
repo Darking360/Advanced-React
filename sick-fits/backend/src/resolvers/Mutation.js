@@ -180,7 +180,7 @@ const mutations = {
     }, info);
     // Check if that item is already in that cart and increment by one, or add it new
     if (existingCartItem) {
-      console.log('This item is already in their cart')
+      // console.log('This item is already in their cart')
       return ctx.db.mutation.updateCartItem({
         where: { id: existingCartItem.id },
         data: { quantity: existingCartItem.quantity + 1 },
@@ -236,8 +236,6 @@ const mutations = {
       currency: 'USD',
       source
     });
-    console.log('Stripe charge is ---->');
-    console.log(charge);
     // Convert cart items to order items
     const orderItems = user.cart.map((cartItem) => {
       const OrderItem = {
@@ -247,13 +245,15 @@ const mutations = {
         },
         quantity: cartItem.quantity,
       };
+      delete OrderItem.id;
+      return OrderItem;
     });
     // Create order
     const Order = await ctx.db.mutation.createOrder({
       data: {
         total: charge.amount,
         charge: charge.id,
-        items: { create: OrderItems },
+        items: { create: orderItems },
         user: { connect: { id: ctx.request.userId } },
       },
     });
