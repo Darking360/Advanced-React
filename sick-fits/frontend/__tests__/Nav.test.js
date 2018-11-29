@@ -50,7 +50,7 @@ const signedInMocksWithCartItems = [
 
 describe('<Nav />', () => {
   
-  it('renders a minimal Nav when signed out', async () => {
+  it.only('renders a minimal Nav when signed out', async () => {
     const wrapper = mount(
       <MockedProvider mocks={notSignedInMocks}>
         <Nav />
@@ -76,7 +76,7 @@ describe('<Nav />', () => {
     
     const nav = wrapper.find('ul[data-test="nav"]');
     // expect(toJSON(nav)).toMatchSnapshot();
-    expect(nav.children().length).toBe(7);
+    expect(nav.children().length).toBe(6);
     expect(nav.children()).toContain('Sign Out');
   });
 
