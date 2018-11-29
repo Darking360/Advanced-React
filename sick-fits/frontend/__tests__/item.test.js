@@ -1,5 +1,6 @@
 import ItemComponent from '../components/Item';
 import { shallow } from 'enzyme';
+import toJSON from 'enzyme-to-json';
 
 const FakeItem = {
   id: 'ABC123',
@@ -11,6 +12,12 @@ const FakeItem = {
 };
 
 describe('<Item />', () => {
+
+  it('render and matches the snapshot', () => {
+    const wrapper = shallow(<ItemComponent item={FakeItem} />);
+    expect(toJSON(wrapper)).toMatchSnapshot();
+
+  });
   it('renders the price tag and title', () => {
     const wrapper = shallow(<ItemComponent item={FakeItem} />);
     const PriceTag = wrapper.find('PriceTag');
@@ -33,6 +40,6 @@ describe('<Item />', () => {
     expect(buttons.find('Link').exists()).toBe(true);
     expect(buttons.find('Link')).toHaveLength(1);// Another way to do it
     expect(buttons.find('AddToCart').exists()).toBe(true);
-    expect(buttons.find('RemoveFromCart').exists()).toBe(true);
+    expect(buttons.find('DeleteItem').exists()).toBe(true);
   });
 });
