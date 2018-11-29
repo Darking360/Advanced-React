@@ -9,7 +9,7 @@ import { Mutation } from 'react-apollo';
 const Nav = props => (
   <User>
     {({ data: { me } }) => (
-      <NavStyles>
+      <NavStyles data-test="nav">
         <Link href="/items">
           <a>Shop</a>
         </Link>
