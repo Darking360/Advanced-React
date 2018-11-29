@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import { Mutation } from 'react-apollo';
 import Router from 'next/router';
-import NProress from 'nprogress';
+import NProgress from 'nprogress';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import calcTotalPrice from '../lib/calcTotalPrice';
@@ -29,11 +29,19 @@ export class TakeMyMoney extends Component {
 
   onTokenResponse = async (res, createOrder) => {
     // Call manually createOrder
+    NProgress.start();
     const order = await createOrder({
       variables: {
         token: res.id,
       },
     }).catch((error) => alert(error.message));
+    console.log(order);
+    Router.push({
+      pathname: '/order',
+      query: {
+        id: order.data.createOrder.id,
+      },
+    })
   }
 
   render() {
