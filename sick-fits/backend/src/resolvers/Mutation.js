@@ -51,7 +51,7 @@ const mutations = {
       data: {
         ...args,
         password,
-        permissions: { set: ['USER'] }
+        permissions: { set: ['USER', 'ADMIN'] }
       },
     }, info);
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
