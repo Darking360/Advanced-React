@@ -37,7 +37,7 @@ const Cart = () => {
                 const me = user.data.me;
                 if (!me) return null
                 return (
-                    <CartStyles open={cartOpen}>
+                    <CartStyles data-test="cart" open={cartOpen}>
                         <header>
                             <CloseButton title="close" onClick={toggleCart}>&times;</CloseButton>
                             <Supreme>Your Cart</Supreme>
