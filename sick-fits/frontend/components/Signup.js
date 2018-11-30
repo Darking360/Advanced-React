@@ -45,7 +45,7 @@ class Signup extends Component {
         ]}
       >
         {(signup, { error, loading }) => (
-          <Form method='post' onSubmit={(e) => this.handleSubmit(e,signup)}>
+          <Form data-test="form" method='post' onSubmit={(e) => this.handleSubmit(e,signup)}>
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Sign Up for an account</h2>
               <Error error={error} />
@@ -90,3 +90,4 @@ class Signup extends Component {
 }
 
 export default Signup;
+export { SIGNUP_MUTATION };
