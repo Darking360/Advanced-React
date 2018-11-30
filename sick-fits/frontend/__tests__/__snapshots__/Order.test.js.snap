@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Order /> renders and matches snapshot 1`] = `
+<div
+  className="OrderStyles-sc-4oqalm-0 camMij"
+  data-test="order"
+>
+  <SideEffect(Head)>
+    <Head />
+  </SideEffect(Head)>
+  <p>
+    <span>
+      Order ID
+    </span>
+    <span>
+      9f8e79c4-0fa4-4505-a740-e67ee17558f5
+    </span>
+  </p>
+  <p>
+    <span>
+      Charge
+    </span>
+    <span
+      data-test="charge"
+    >
+      xyz789
+    </span>
+  </p>
+  <p>
+    <span>
+      Date
+    </span>
+    <span>
+      November 30, 2018 11:39 AM
+    </span>
+  </p>
+  <p>
+    <span>
+      Order total
+    </span>
+    <span
+      data-test="total"
+    >
+      $84.68
+    </span>
+  </p>
+  <p>
+    <span>
+      Item Count
+    </span>
+    <span
+      data-test="count"
+    >
+      2
+    </span>
+  </p>
+  <div
+    className="items"
+  >
+    <div
+      className="order-item"
+      key="9f8e79c4-0fa4-4505-a740-e67ee17558f5"
+    >
+      <img
+        alt="soluta non omnis consequatur enim quia autem"
+        src="reprehenderit.jpg"
+      />
+      <div
+        className="item-details"
+      >
+        <h2>
+          soluta non omnis consequatur enim quia autem
+        </h2>
+        <p>
+          Quantity: 
+          1
+        </p>
+        <p>
+          Each: 
+          $42.34
+        </p>
+        <p>
+          Subtotal: 
+          $42.34
+        </p>
+        <p>
+          et modi tenetur amet modi reprehenderit omnis
+        </p>
+      </div>
+    </div>
+    <div
+      className="order-item"
+      key="9f8e79c4-0fa4-4505-a740-e67ee17558f5"
+    >
+      <img
+        alt="quia sed exercitationem omnis laborum exercitationem est"
+        src="sint.jpg"
+      />
+      <div
+        className="item-details"
+      >
+        <h2>
+          quia sed exercitationem omnis laborum exercitationem est
+        </h2>
+        <p>
+          Quantity: 
+          1
+        </p>
+        <p>
+          Each: 
+          $42.34
+        </p>
+        <p>
+          Subtotal: 
+          $42.34
+        </p>
+        <p>
+          sapiente laudantium molestias assumenda quasi adipisci mollitia
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

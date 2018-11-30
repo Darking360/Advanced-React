@@ -52,7 +52,9 @@ export class TakeMyMoney extends Component {
       >
         {(createOrder) => (
           <User>
-            {({ data: { me } }) => (
+            {({ data: { me }, loading }) => {
+              if (loading) return null;
+              return (
                 <StripeCheckout
                     amount={calcTotalPrice(me.cart)}
                     name="Sick Fists"
@@ -63,7 +65,8 @@ export class TakeMyMoney extends Component {
                     email={me.email}
                     token={res => this.onTokenResponse(res, createOrder)}
                 >{this.props.children}</StripeCheckout>
-            )}
+              )
+            }}
           </User>
         )}
       </Mutation>
@@ -71,4 +74,5 @@ export class TakeMyMoney extends Component {
   }
 }
 
-export default TakeMyMoney
+export default TakeMyMoney;
+export { CREATE_ORDER_MUTATION };

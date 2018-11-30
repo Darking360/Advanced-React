@@ -44,7 +44,7 @@ export class Order extends Component {
           if (loading) return <p>Loading...</p>
           const order = data.order;
           return (
-            <OrderStyles>
+            <OrderStyles data-test="order">
               <Head>
                 <title>Sick Fits - Order {order.id}</title>
               </Head>
@@ -54,19 +54,19 @@ export class Order extends Component {
               </p>
               <p>
                 <span>Charge</span>
-                <span>{order.charge}</span>
+                <span data-test="charge">{order.charge}</span>
               </p>
               <p>
                 <span>Date</span>
-                <span>{format(order.charge, 'MMMM d, YYYY h:mm a')}</span>
+                <span>{format(order.createdAt, 'MMMM d, YYYY h:mm a')}</span>
               </p>
               <p>
                 <span>Order total</span>
-                <span>{formatMoney(order.total)}</span>
+                <span data-test="total">{formatMoney(order.total)}</span>
               </p>
               <p>
                 <span>Item Count</span>
-                <span>{order.items.length}</span>
+                <span data-test="count">{order.items.length}</span>
               </p>
               <div className="items">
                 {order.items.map((item) => (
@@ -90,4 +90,5 @@ export class Order extends Component {
   }
 }
 
-export default Order
+export default Order;
+export { SINGLE_ORDER_QUERY };
